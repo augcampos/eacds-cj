@@ -55,7 +55,7 @@ public class SContent extends SBaseModule {
     }
 
     /**
-     * Unsubscribe Packages to a school
+     * Unsubscribe Packages from a school
      *
      * @param schoolId school Id
      * @param packages Collection of packagesIds to unSubscribe

@@ -1,4 +1,7 @@
 eacds-cj
 ========
 
- Education Appliance Content Distribution System Client in Java
+Copyright (c) Critical Links S.A., All Rights Reserved.
+(www.critical-links.com)
+
+ Education Appliance Content Distribution System Client lib in/for Java

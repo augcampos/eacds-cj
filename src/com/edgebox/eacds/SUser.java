@@ -13,6 +13,7 @@ import com.edgebox.eacds.data.CDUser;
 import com.edgebox.eacds.net.CDConnection;
 import com.edgebox.eacds.net.CDConnectionException;
 import com.edgebox.eacds.net.CDPostResponse;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Module to handle User related actions
@@ -36,46 +38,93 @@ public class SUser extends SBaseModule {
      * Create a new user
      *
      * @param user user into to create
-     * @return json string user with all fields filled OR Error message
      * <p><b>Note: </b> On success new fields are filled in the user parameter
+     * @throws Exception
      * @see CDUser
      */
-    public boolean create(CDUser user) {
-        try {
-            if (user == null) {
-                throw new Exception("Invalid user information!");
-            }
-
-            Map<String, String> params = new LinkedHashMap<>();
-            params.put("method", "SUsers.createUser");
-            params.put("param1", gson.toJson(user));
-
-            String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-
-            CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
-            if (pr.success) {
-                // new fields add to User clas
-                CDUser nu = gson.fromJson(pr.data, CDUser.class);
-                user.cloneData(nu);
-                return true;
-            } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.WARNING, pr.log());
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+    public void create(CDUser user) throws Exception {
+        if (user == null) {
+            throw new Exception("Invalid user information!");
         }
 
-        return false;
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.createUser");
+        params.put("param1", gson.toJson(user));
+
+        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+
+        CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
+        if (pr.success) {
+            // new fields add to User class
+            String user_jason = pr.data.toString();
+            CDUser nu = gson.fromJson(user_jason, CDUser.class);
+            user.cloneData(nu);
+        } else {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
+    }
+
+    /**
+     * Update user Info
+     *
+     * @param user new Info about the user
+     * <p><b>Note: </b> On success new fields are filled in the user parameter
+     * @throws Exception
+     */
+    public void update(CDUser user) throws Exception {
+        if (user == null) {
+            throw new Exception("Invalid user information!");
+        }
+
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.updateUser");
+        params.put("param1", gson.toJson(user));
+
+        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+
+        CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
+        if (pr.success) {
+            // new fields add to User class
+            String user_jason = pr.data.toString();
+            CDUser nu = gson.fromJson(user_jason, CDUser.class);
+            user.cloneData(nu);
+        } else {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
+    }
+
+    /**
+     * Removes a existing user.
+     *
+     * @param userId id of user to remove
+     * @throws Exception
+     */
+    public void remove(int userId) throws Exception {
+
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.removeUser");
+        params.put("param1", "" + userId);
+
+        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+
+        CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
+
+        if (!pr.success) {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
     }
 
     /**
      * Get user info
      *
-     * @param userId
+     * @param userId id of user to get
      * @return <CDUser>
+     * @throws java.lang.Exception
      */
-    public CDUser get(int userId) {
+    public CDUser get(int userId) throws Exception {
         try {
             Map<String, String> params = new LinkedHashMap<>();
             params.put("method", "SUsers.getUser");
@@ -85,12 +134,11 @@ public class SUser extends SBaseModule {
             return gson.fromJson(tt, CDUser.class);
 
         } catch (CDConnectionException ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, ex.log());
-        } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+            if (ex.getStatusCode() == HttpsURLConnection.HTTP_BAD_REQUEST) {
+                return null; // NOTE recive a 400 error on a not invalid id user
+            }
+            throw ex;
         }
-
-        return null;
     }
 
     /**
@@ -99,21 +147,19 @@ public class SUser extends SBaseModule {
      * @param offset - initial offset of the list
      * @param limit - limit of users(rows) returned
      * @return a Collection<CDUser>
+     * @throws Exception
      */
-    public Collection<CDUser> list(int offset, int limit) {
+    public Collection<CDUser> list(int offset, int limit) throws Exception {
         Collection<CDUser> rt = new ArrayList<>();
-        try {
-            Map<String, String> params = new LinkedHashMap<>();
-            params.put("method", "SUsers.listUsers");
-            params.put("param1", "" + offset);
-            params.put("param2", "" + limit);
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.listUsers");
+        params.put("param1", "" + offset);
+        params.put("param2", "" + limit);
 
-            String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-            CDUser[] ar = gson.fromJson(tt, CDUser[].class);
-            rt.addAll(Arrays.asList(ar));
-        } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-        }
+        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDUser[] ar = gson.fromJson(tt, CDUser[].class);
+        rt.addAll(Arrays.asList(ar));
+
         return rt;
     }
 }

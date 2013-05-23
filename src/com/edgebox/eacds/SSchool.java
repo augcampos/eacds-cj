@@ -9,8 +9,8 @@
  */
 package com.edgebox.eacds;
 
-import com.edgebox.eacds.net.CDConnection;
 import com.edgebox.eacds.data.CDSchool;
+import com.edgebox.eacds.net.CDConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

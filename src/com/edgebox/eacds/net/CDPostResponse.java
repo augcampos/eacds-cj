@@ -10,7 +10,6 @@
 package com.edgebox.eacds.net;
 
 import com.edgebox.eacds.data.CDBaseData;
-import com.google.gson.JsonObject;
 
 /**
  *
@@ -36,10 +35,10 @@ public class CDPostResponse extends CDBaseData {
     public String errorTrace;
 
     /**
-     * JSON Returned data
+     * Object Returned data
      * <p>Only filled on case <success> is true.
      */
-    public JsonObject data;
+    public Object data;
 
     /**
      * Constructor.

@@ -9,9 +9,10 @@
  */
 package com.edgebox.eacds;
 
-import com.edgebox.eacds.net.CDConnection;
 import com.edgebox.eacds.data.CDPackage;
 import com.edgebox.eacds.data.CDPackageContent;
+import com.edgebox.eacds.net.CDConnection;
+import com.edgebox.eacds.net.CDPostResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,6 +30,50 @@ public class SContent extends SBaseModule {
 
     SContent(String serverJavaScriptInterface) {
         super(serverJavaScriptInterface);
+    }
+
+    /**
+     * Subscribe Packages to a school
+     *
+     * @param schoolId school Id
+     * @param packages Collection of packagesIds to Subscribe
+     * @throws Exception
+     */
+    public void subscribePackage(int schoolId, Collection<Integer> packages) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SContents.subscribePackage");
+        params.put("param1", "" + schoolId);
+        params.put("param2", gson.toJson(packages));
+
+        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+
+        CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
+        if (!pr.success) {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
+    }
+
+    /**
+     * Unsubscribe Packages to a school
+     *
+     * @param schoolId school Id
+     * @param packages Collection of packagesIds to unSubscribe
+     * @throws Exception
+     */
+    public void unsubscribePackage(int schoolId, Collection<Integer> packages) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SContents.unsubscribePackage");
+        params.put("param1", "" + schoolId);
+        params.put("param2", gson.toJson(packages));
+
+        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+
+        CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
+        if (!pr.success) {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
     }
 
     /**

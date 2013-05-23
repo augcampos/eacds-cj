@@ -1,4 +1,4 @@
 eacds-cj
 ========
 
- Education Appliance Content Distribution System Client in Java
+ Education Appliance Content Distribution System Client lib in Java

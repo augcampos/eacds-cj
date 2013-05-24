@@ -45,9 +45,9 @@ public class SContent extends SBaseModule {
         params.put("param1", "" + schoolId);
         params.put("param2", gson.toJson(packages));
 
-        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
+        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
@@ -67,9 +67,9 @@ public class SContent extends SBaseModule {
         params.put("param1", "" + schoolId);
         params.put("param2", gson.toJson(packages));
 
-        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
+        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
@@ -81,22 +81,16 @@ public class SContent extends SBaseModule {
      *
      * @param schoolId
      * @return
+     * @throws java.lang.Exception
      */
-    public Collection<CDPackage> listSchoolPackagesSubscribed(int schoolId) {
-        try {
-            Map<String, String> params = new LinkedHashMap<>();
-            params.put("method", "SContents.getPackagesSubscribe");
-            params.put("param1", "" + schoolId);
+    public Collection<CDPackage> listSchoolPackagesSubscribed(int schoolId) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SContents.getPackagesSubscribe");
+        params.put("param1", "" + schoolId);
 
-            String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-
-            CDPackage[] ar = gson.fromJson(tt, CDPackage[].class);
-            return new ArrayList<>(Arrays.asList(ar));
-
-        } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDPackage[] ar = gson.fromJson(rt, CDPackage[].class);
+        return new ArrayList<>(Arrays.asList(ar));
     }
 
     /**
@@ -106,25 +100,22 @@ public class SContent extends SBaseModule {
      * @param offset- start offset
      * @param limit - limit returned records
      * @return Collection<CDPackage>
+     * @throws java.lang.Exception
      * @see CDPackage
      */
-    public Collection<CDPackage> listPackage(String text, int offset, int limit) {
-        try {
-            Map<String, String> params = new LinkedHashMap<>();
-            params.put("method", "SContents.listPackages");
-            params.put("param1", "\"" + text + "\"");
-            params.put("param2", "" + offset);
-            params.put("param3", "" + limit);
+    public Collection<CDPackage> listPackage(String text, int offset, int limit) throws Exception {
 
-            String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SContents.listPackages");
+        params.put("param1", "\"" + text + "\"");
+        params.put("param2", "" + offset);
+        params.put("param3", "" + limit);
 
-            CDPackage[] ar = gson.fromJson(tt, CDPackage[].class);
-            return new ArrayList<>(Arrays.asList(ar));
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        CDPackage[] ar = gson.fromJson(rt, CDPackage[].class);
+        return new ArrayList<>(Arrays.asList(ar));
+
     }
 
     /**
@@ -134,25 +125,22 @@ public class SContent extends SBaseModule {
      * @param offset- start offset
      * @param limit - limit returned records
      * @return Collection<CDPackageContent>
+     * @throws java.lang.Exception
      * @see* CDPackageContent
      */
-    public Collection<CDPackageContent> listPackageContent(int pakageId, int offset, int limit) {
-        try {
-            Map<String, String> params = new LinkedHashMap<>();
-            params.put("method", "SContents.listPackage");
-            params.put("param1", "" + pakageId);
-            params.put("param2", "" + offset);
-            params.put("param3", "" + limit);
+    public Collection<CDPackageContent> listPackageContent(int pakageId, int offset, int limit) throws Exception {
 
-            String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SContents.listPackage");
+        params.put("param1", "" + pakageId);
+        params.put("param2", "" + offset);
+        params.put("param3", "" + limit);
 
-            CDPackageContent[] ar = gson.fromJson(tt, CDPackageContent[].class);
-            return new ArrayList<>(Arrays.asList(ar));
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        CDPackageContent[] ar = gson.fromJson(rt, CDPackageContent[].class);
+        return new ArrayList<>(Arrays.asList(ar));
+
     }
 
 }

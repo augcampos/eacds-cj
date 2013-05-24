@@ -16,8 +16,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -33,20 +31,19 @@ public class SDistribution extends SBaseModule {
      * List all running sync jobs in de Content Server
      *
      * @return Collection<CDJob>
+     * @throws java.lang.Exception
      */
-    public Collection<CDJob> listJobs() {
-        try {
-            Map<String, String> params = new LinkedHashMap<>();
-            params.put("method", "SDistribution.listJobs");
+    public Collection<CDJob> listJobs() throws Exception {
 
-            String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SDistribution.listJobs");
 
-            CDJob[] ar = gson.fromJson(tt, CDJob[].class);
-            return new ArrayList<>(Arrays.asList(ar));
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        } catch (Exception ex) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        Collection<CDJob> lrt = new ArrayList<>();
+        CDJob[] ar = gson.fromJson(rt, CDJob[].class);
+        lrt.addAll(Arrays.asList(ar));
+
+        return lrt;
     }
 }

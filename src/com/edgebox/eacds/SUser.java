@@ -13,7 +13,6 @@ import com.edgebox.eacds.data.CDUser;
 import com.edgebox.eacds.net.CDConnection;
 import com.edgebox.eacds.net.CDConnectionException;
 import com.edgebox.eacds.net.CDPostResponse;
-import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -51,9 +50,9 @@ public class SUser extends SBaseModule {
         params.put("method", "SUsers.createUser");
         params.put("param1", gson.toJson(user));
 
-        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
+        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
         if (pr.success) {
             // new fields add to User class
             String user_jason = pr.data.toString();
@@ -81,15 +80,60 @@ public class SUser extends SBaseModule {
         params.put("method", "SUsers.updateUser");
         params.put("param1", gson.toJson(user));
 
-        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
+        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
         if (pr.success) {
             // new fields add to User class
             String user_jason = pr.data.toString();
             CDUser nu = gson.fromJson(user_jason, CDUser.class);
             user.cloneData(nu);
         } else {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
+    }
+
+    /**
+     * Change User password for the current logged user
+     *
+     * @param currentPassword current user password
+     * @param newPassword new user password
+     * @throws Exception
+     */
+    public void changeUserPassword(String currentPassword, String newPassword) throws Exception {
+        this.changeUserPassword(-1, currentPassword, newPassword);
+    }
+
+    /**
+     * Change Password for a user
+     *
+     * @param userId User Id or -1 to current user
+     * @param currentPassword current user password
+     * @param newPassword new user password
+     * @throws Exception
+     */
+    public void changeUserPassword(int userId, String currentPassword, String newPassword) throws Exception {
+        if (currentPassword == null) {
+            throw new Exception("Invalid CurrentPassword!");
+        }
+        if (newPassword == null) {
+            throw new Exception("Invalid BewPassword!");
+        }
+
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.changePassword");
+        if (userId == -1) {
+            params.put("param1", "\"" + currentPassword + "\"");
+            params.put("param2", "\"" + newPassword + "\"");
+        } else {
+            params.put("param1", "" + userId);
+            params.put("param2", "\"" + currentPassword + "\"");
+            params.put("param3", "\"" + newPassword + "\"");
+        }
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
         }
@@ -107,9 +151,9 @@ public class SUser extends SBaseModule {
         params.put("method", "SUsers.removeUser");
         params.put("param1", "" + userId);
 
-        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(tt, CDPostResponse.class);
+        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
 
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
@@ -130,8 +174,8 @@ public class SUser extends SBaseModule {
             params.put("method", "SUsers.getUser");
             params.put("param1", "" + userId);
 
-            String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-            return gson.fromJson(tt, CDUser.class);
+            String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+            return gson.fromJson(rt, CDUser.class);
 
         } catch (CDConnectionException ex) {
             if (ex.getStatusCode() == HttpsURLConnection.HTTP_BAD_REQUEST) {
@@ -150,16 +194,16 @@ public class SUser extends SBaseModule {
      * @throws Exception
      */
     public Collection<CDUser> list(int offset, int limit) throws Exception {
-        Collection<CDUser> rt = new ArrayList<>();
+        Collection<CDUser> lrt = new ArrayList<>();
         Map<String, String> params = new LinkedHashMap<>();
         params.put("method", "SUsers.listUsers");
         params.put("param1", "" + offset);
         params.put("param2", "" + limit);
 
-        String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-        CDUser[] ar = gson.fromJson(tt, CDUser[].class);
-        rt.addAll(Arrays.asList(ar));
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDUser[] ar = gson.fromJson(rt, CDUser[].class);
+        lrt.addAll(Arrays.asList(ar));
 
-        return rt;
+        return lrt;
     }
 }

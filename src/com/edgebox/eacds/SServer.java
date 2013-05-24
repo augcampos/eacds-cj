@@ -38,9 +38,9 @@ public class SServer extends SBaseModule {
             Map<String, String> params = new HashMap<>();
             params.put("method", "SServer.getVersion");
 
-            String tt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+            String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-            CDServerVersion sv = gson.fromJson(tt, CDServerVersion.class);
+            CDServerVersion sv = gson.fromJson(rt, CDServerVersion.class);
 
             return sv;
 

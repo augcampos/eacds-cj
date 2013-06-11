@@ -9,8 +9,8 @@
  */
 package com.edgebox.eacds;
 
-import com.edgebox.eacds.net.CDConnection;
 import com.edgebox.eacds.data.CDJob;
+import com.edgebox.eacds.net.CDConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,4 +46,37 @@ public class SDistribution extends SBaseModule {
 
         return lrt;
     }
+
+    public void RequestSchoolSynchronization() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void GetSchoolSynchronizationState() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void GetSchoolPackageSynchronizationState() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void ClearDoneJobs() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void GetPackageSynchronizationState() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void RequestSchoolPackageSynchronization() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void RequestPackageSynchronization() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void ListStats() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
 }

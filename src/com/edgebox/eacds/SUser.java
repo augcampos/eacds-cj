@@ -9,6 +9,7 @@
  */
 package com.edgebox.eacds;
 
+import com.edgebox.eacds.data.CDSchool;
 import com.edgebox.eacds.data.CDUser;
 import com.edgebox.eacds.net.CDConnection;
 import com.edgebox.eacds.net.CDConnectionException;
@@ -42,26 +43,7 @@ public class SUser extends SBaseModule {
      * @see CDUser
      */
     public void create(CDUser user) throws Exception {
-        if (user == null) {
-            throw new Exception("Invalid user information!");
-        }
-
-        Map<String, String> params = new LinkedHashMap<>();
-        params.put("method", "SUsers.createUser");
-        params.put("param1", gson.toJson(user));
-
-        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
-        if (pr.success) {
-            // new fields add to User class
-            String user_jason = pr.data.toString();
-            CDUser nu = gson.fromJson(user_jason, CDUser.class);
-            user.cloneData(nu);
-        } else {
-            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
-            throw new Exception(pr.message);
-        }
+        this.setUser("SUsers.createUser", user);
     }
 
     /**
@@ -72,12 +54,16 @@ public class SUser extends SBaseModule {
      * @throws Exception
      */
     public void update(CDUser user) throws Exception {
+        this.setUser("SUsers.updateUser", user);
+    }
+
+    private void setUser(String action, CDUser user) throws Exception {
         if (user == null) {
             throw new Exception("Invalid user information!");
         }
 
         Map<String, String> params = new LinkedHashMap<>();
-        params.put("method", "SUsers.updateUser");
+        params.put("method", action);
         params.put("param1", gson.toJson(user));
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
@@ -146,13 +132,11 @@ public class SUser extends SBaseModule {
      * @throws Exception
      */
     public void remove(int userId) throws Exception {
-
         Map<String, String> params = new LinkedHashMap<>();
         params.put("method", "SUsers.removeUser");
         params.put("param1", "" + userId);
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-
         CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
 
         if (!pr.success) {
@@ -204,6 +188,139 @@ public class SUser extends SBaseModule {
         CDUser[] ar = gson.fromJson(rt, CDUser[].class);
         lrt.addAll(Arrays.asList(ar));
 
+        return lrt;
+    }
+
+    /**
+     * List All SchoolAdministrator users for a school
+     *
+     * @param schoolId School ID
+     * @return Collections of CDUser
+     * @throws Exception
+     */
+    public Collection<CDUser> getSchoolUserAdmins(int schoolId) throws Exception {
+        Collection<CDUser> lrt = new ArrayList<>();
+
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.getSchoolUserAdmins");
+        params.put("param1", "" + schoolId);
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDUser[] ar = gson.fromJson(rt, CDUser[].class);
+        lrt.addAll(Arrays.asList(ar));
+        return lrt;
+    }
+
+    /**
+     * Get Current logged user info
+     *
+     * @return CDUser
+     * @throws Exception
+     */
+    public CDUser getSessionUser() throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.getSessionUser");
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        return gson.fromJson(rt, CDUser.class);
+
+    }
+
+    /**
+     * List Schools where the user is School Administrator
+     *
+     * @param userId User ID
+     * @return Collection<CDSchool>
+     * @throws Exception
+     */
+    public Collection<CDSchool> getUserAdminSchools(int userId) throws Exception {
+        Collection<CDSchool> lrt = new ArrayList<>();
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.getUserAdminSchools");
+        params.put("param1", "" + userId);
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDSchool[] ar = gson.fromJson(rt, CDSchool[].class);
+        lrt.addAll(Arrays.asList(ar));
+        return lrt;
+    }
+
+    /**
+     * Add a user as School administrator for the school
+     *
+     * @param schoolId School ID
+     * @param userId User ID
+     * @throws Exception
+     */
+    public void addSchoolUserAdmin(int schoolId, int userId) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.addSchoolUserAdmin");
+        params.put("param1", "" + schoolId);
+        params.put("param2", "" + userId);
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+
+        if (!pr.success) {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
+    }
+
+    /**
+     * Remove a user as School administrator for the school
+     *
+     * @param schoolId School ID
+     * @param userId User ID
+     * @throws Exception
+     */
+    public void removeSchoolUserAdmin(int schoolId, int userId) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.removeSchoolUserAdmin");
+        params.put("param1", "" + schoolId);
+        params.put("param2", "" + userId);
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+
+        if (!pr.success) {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
+    }
+
+    /**
+     * Set N Users as School administrators for the school
+     *
+     * @param schoolId School ID
+     * @param userIds Collections of users IDs
+     * @throws Exception
+     */
+    public void setSchoolUserAdmins(int schoolId, Collection<Integer> userIds) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.setSchoolUserAdmins");
+        params.put("param1", "" + schoolId);
+        params.put("param2", gson.toJson(userIds));
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+
+        if (!pr.success) {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
+    }
+
+    public Collection<CDUser> getUsers(CDUser.Type type) throws Exception {
+        Collection<CDUser> lrt = new ArrayList<>();
+
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SUsers.getUsers");
+        params.put("param1", "" + type);
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDUser[] ar = gson.fromJson(rt, CDUser[].class);
+        lrt.addAll(Arrays.asList(ar));
         return lrt;
     }
 }

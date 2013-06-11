@@ -129,7 +129,6 @@ public class SContent extends SBaseModule {
      * @see* CDPackageContent
      */
     public Collection<CDPackageContent> listPackageContent(int pakageId, int offset, int limit) throws Exception {
-
         Map<String, String> params = new LinkedHashMap<>();
         params.put("method", "SContents.listPackage");
         params.put("param1", "" + pakageId);
@@ -141,6 +140,54 @@ public class SContent extends SBaseModule {
         CDPackageContent[] ar = gson.fromJson(rt, CDPackageContent[].class);
         return new ArrayList<>(Arrays.asList(ar));
 
+    }
+
+    public void createPackage() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void listPackagesForSubscription() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void removePackage() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void updatePackage() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void getSchoolsWithPackageSubscribe() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void getContentInfo() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void synchronizeSubscribePackage() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void createDirectory() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void listPackage() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void getPackage() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void move() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
+    }
+
+    public void remove() throws Exception {
+        throw new Exception("NOT IMPLEMENTED...");
     }
 
 }

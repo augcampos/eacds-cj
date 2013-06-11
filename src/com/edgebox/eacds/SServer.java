@@ -9,8 +9,8 @@
  */
 package com.edgebox.eacds;
 
-import com.edgebox.eacds.net.CDConnection;
 import com.edgebox.eacds.data.CDServerVersion;
+import com.edgebox.eacds.net.CDConnection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;

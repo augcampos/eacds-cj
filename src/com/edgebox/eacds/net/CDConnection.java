@@ -23,7 +23,6 @@ import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,8 +104,7 @@ public class CDConnection {
         conn.setAllowUserInteraction(false);
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         try (OutputStream out = conn.getOutputStream(); Writer writer = new OutputStreamWriter(out, "UTF-8")) {
-            for (Iterator<Map.Entry<String, String>> it = params.entrySet().iterator(); it.hasNext();) {
-                Map.Entry<String, String> entry = it.next();
+            for (Map.Entry<String, String> entry : params.entrySet()) {
                 writer.write(entry.getKey());
                 writer.write("=");
                 writer.write(entry.getValue());

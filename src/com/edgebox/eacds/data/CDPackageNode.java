@@ -10,15 +10,16 @@
 package com.edgebox.eacds.data;
 
 /**
+ * Package Node Information
  *
  * @author Augusto Campos <a-campos at critical-links.com>
  */
-public class CDPackageContent extends CDBaseData {
+public class CDPackageNode extends CDBaseData {
 
+    public boolean directory;
     public String path;
-    public int size;
-    public long lastUpdate;
 
-    public CDPackageContent() {
+    public CDPackageNode() {
     }
+
 }

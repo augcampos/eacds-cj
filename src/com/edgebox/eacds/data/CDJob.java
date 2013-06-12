@@ -15,6 +15,16 @@ package com.edgebox.eacds.data;
  */
 public class CDJob extends CDBaseData {
 
+    public static class State {
+
+        public static final int WAITING = 0;
+        public static final int RUNNING = 1;
+        public static final int CANCEL = 2;
+        public static final int ERROR = 3;
+        public static final int FINISHED = 4;
+        public static final int EXPIRED = 5;
+    };
+
     public long eta;
     public double reate;
     public int jobState;

@@ -17,17 +17,17 @@ public class CDPackage extends CDBaseData {
 
     public static class Type {
 
-        public static int Public = 0;
-        public static int Private = 1;
+        public static final int Public = 0;
+        public static final int Private = 1;
 
     }
 
     public static class Status {
 
-        public static int Normal = 0;
-        public static int InMaintenance = 1;
-        public static int Updating = 2;
-        public static int Undefined = -1;
+        public static final int Normal = 0;
+        public static final int InMaintenance = 1;
+        public static final int Updating = 2;
+        public static final int Undefined = -1;
 
     }
     public int id;

@@ -5,6 +5,8 @@
  */
 package com.edgebox.eacds.data;
 
+import java.util.Collection;
+
 /**
  *
  * @author Augusto Campos <a-campos at critical-links.com>
@@ -15,6 +17,7 @@ public class CDGroup extends CDBaseData {
     public String name;
     public int parentId;
     public String description;
+    public Collection<CDGroup> subGroups;
 
     public CDGroup() {
     }

@@ -9,6 +9,7 @@
  */
 package com.edgebox.eacds;
 
+import com.edgebox.eacds.data.CDGroup;
 import com.edgebox.eacds.data.CDSchool;
 import com.edgebox.eacds.net.CDConnection;
 import com.edgebox.eacds.net.CDPostResponse;
@@ -107,11 +108,11 @@ public class SSchool extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (pr.success) {
             // new fields add to class
-            String user_jason = pr.data.toString();
-            CDSchool nu = gson.fromJson(user_jason, CDSchool.class);
+            String school_jason = pr.data.toString();
+            CDSchool nu = gson.fromJson(school_jason, CDSchool.class);
             school.cloneData(nu);
         } else {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
@@ -131,39 +132,155 @@ public class SSchool extends SBaseModule {
         params.put("param1", "" + schoolId);
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
         }
     }
 
-    public void moveSchool() throws Exception {
-        throw new Exception("NOT IMPLEMENTED...");
+    /**
+     * Move school to group
+     *
+     * @param schoolId school id to move
+     * @param groupId group id to set in the school
+     * @throws Exception
+     */
+    public void moveSchool(int schoolId, int groupId) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SSchools.moveSchool");
+        params.put("param1", "" + schoolId);
+        params.put("param2", "" + groupId);
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDPostResponse pr = CDPostResponse.build(rt);
+        if (!pr.success) {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
     }
 
-    public void moveGroupToGroup() throws Exception {
-        throw new Exception("NOT IMPLEMENTED...");
+    /**
+     * Move group to child of parent group
+     *
+     * @param groupId group id to move
+     * @param parentId group id to be parent
+     * @throws Exception
+     */
+    public void moveGroupToGroup(int groupId, int parentId) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SSchools.moveGroupToGroup");
+        params.put("param1", "" + groupId);
+        params.put("param2", "" + parentId);
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDPostResponse pr = CDPostResponse.build(rt);
+        if (!pr.success) {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
     }
 
-    public void getGroup() throws Exception {
-        throw new Exception("NOT IMPLEMENTED...");
+    /**
+     * Get group information from content server
+     *
+     * @param groupId group id to get
+     * @param recursive get children recursively
+     * @return <CDGroup>
+     * @throws Exception
+     */
+    public CDGroup getGroup(int groupId, boolean recursive) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SSchools.getGroup");
+        params.put("param1", "" + groupId);
+        params.put("param2", "" + recursive);
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        return gson.fromJson(rt, CDGroup.class);
+
     }
 
-    public void getSubGroups() throws Exception {
-        throw new Exception("NOT IMPLEMENTED...");
+    /**
+     * Get all subgroups for parent group
+     *
+     * @param parentId Groups id to get the subgroups
+     * @param recursive return all children recursively
+     * @return Collection<CDGroup>
+     * @throws Exception
+     */
+    public Collection<CDGroup> getSubGroups(int parentId, boolean recursive) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SSchools.getSubGroups");
+        params.put("param1", "" + parentId);
+        params.put("param2", "" + recursive);
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+
+        Collection<CDGroup> lrt = new ArrayList<>();
+        CDGroup[] ar = gson.fromJson(rt, CDGroup[].class);
+        lrt.addAll(Arrays.asList(ar));
+        return lrt;
     }
 
-    public void createGroup() throws Exception {
-        throw new Exception("NOT IMPLEMENTED...");
+    /**
+     * Create a new group
+     *
+     * @param group information
+     * @throws Exception
+     */
+    public void createGroup(CDGroup group) throws Exception {
+        this.setGroup("SSchools.createGroup", group);
     }
 
-    public void updateGroup() throws Exception {
-        throw new Exception("NOT IMPLEMENTED...");
+    /**
+     * Update a existing group
+     *
+     * @param group new group info (must contain the id)
+     * @throws Exception
+     */
+    public void updateGroup(CDGroup group) throws Exception {
+        this.setGroup("SSchools.updateGroup", group);
     }
 
-    public void removeGroup() throws Exception {
-        throw new Exception("NOT IMPLEMENTED...");
+    private void setGroup(String action, CDGroup group) throws Exception {
+        if (group == null) {
+            throw new Exception("Invalid group information!");
+        }
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", action);
+        params.put("param1", gson.toJson(group));
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+
+        CDPostResponse pr = CDPostResponse.build(rt);
+        if (pr.success) {
+            // new fields add to class
+            String grp_jason = pr.data.toString();
+            CDGroup ng = gson.fromJson(grp_jason, CDGroup.class);
+            group.cloneData(ng);
+        } else {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message, new Throwable(pr.errorTrace));
+        }
+    }
+
+    /**
+     * Remove a existing group
+     *
+     * @param groupId group id to remove
+     * @throws Exception
+     */
+    public void removeGroup(int groupId) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SSchools.removeGroup");
+        params.put("param1", "" + groupId);
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDPostResponse pr = CDPostResponse.build(rt);
+        if (!pr.success) {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
     }
 
 }

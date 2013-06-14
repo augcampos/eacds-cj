@@ -46,7 +46,7 @@ public class SDistribution extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
@@ -68,7 +68,7 @@ public class SDistribution extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
@@ -88,7 +88,7 @@ public class SDistribution extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
@@ -109,7 +109,7 @@ public class SDistribution extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (pr.success) {
             String pk_jason = pr.data.toString();
             CDSchoolSyncState pk = gson.fromJson(pk_jason, CDSchoolSyncState.class);
@@ -136,7 +136,7 @@ public class SDistribution extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (pr.success) {
             String pk_jason = pr.data.toString();
             CDSchoolSyncState pk = gson.fromJson(pk_jason, CDSchoolSyncState.class);
@@ -161,7 +161,7 @@ public class SDistribution extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (pr.success) {
             String pk_jason = pr.data.toString();
             CDPackageSyncState pk = gson.fromJson(pk_jason, CDPackageSyncState.class);
@@ -202,7 +202,7 @@ public class SDistribution extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);

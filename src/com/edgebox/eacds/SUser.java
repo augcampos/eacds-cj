@@ -68,7 +68,7 @@ public class SUser extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (pr.success) {
             // new fields add to User class
             String user_jason = pr.data.toString();
@@ -118,7 +118,7 @@ public class SUser extends SBaseModule {
             params.put("param3", "\"" + newPassword + "\"");
         }
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
@@ -137,7 +137,7 @@ public class SUser extends SBaseModule {
         params.put("param1", "" + userId);
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
 
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
@@ -259,7 +259,7 @@ public class SUser extends SBaseModule {
         params.put("param2", "" + userId);
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
 
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
@@ -281,7 +281,7 @@ public class SUser extends SBaseModule {
         params.put("param2", "" + userId);
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
 
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
@@ -303,7 +303,7 @@ public class SUser extends SBaseModule {
         params.put("param2", gson.toJson(userIds));
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
 
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());

@@ -10,6 +10,9 @@
 package com.edgebox.eacds.net;
 
 import com.edgebox.eacds.data.CDBaseData;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  *
@@ -17,6 +20,17 @@ import com.edgebox.eacds.data.CDBaseData;
  */
 public class CDPostResponse extends CDBaseData {
 
+    public static CDPostResponse build(String json) {
+        CDPostResponse rt = new CDPostResponse();
+        JsonElement e = new JsonParser().parse(json);
+        rt.json = e.getAsJsonObject();
+        rt.success = rt.json.get("success").getAsBoolean();
+        rt.message = rt.json.get("message").getAsString();
+        rt.errorTrace = rt.json.get("errorTrace").getAsString();
+        rt.data = rt.json.getAsJsonObject("data").getAsJsonObject();
+
+        return rt;
+    }
     /**
      * Action Success status.
      */
@@ -39,6 +53,8 @@ public class CDPostResponse extends CDBaseData {
      * <p>Only filled on case <success> is true.
      */
     public Object data;
+
+    private transient JsonObject json;
 
     /**
      * Constructor.

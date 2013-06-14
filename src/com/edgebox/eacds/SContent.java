@@ -52,7 +52,7 @@ public class SContent extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
@@ -74,7 +74,7 @@ public class SContent extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
@@ -193,7 +193,7 @@ public class SContent extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (pr.success) {
             // new fields add to pakage class
             String pk_jason = pr.data.toString();
@@ -217,7 +217,7 @@ public class SContent extends SBaseModule {
         params.put("param1", "" + packageId);
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
 
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
@@ -287,7 +287,7 @@ public class SContent extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
@@ -310,7 +310,7 @@ public class SContent extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (pr.success) {
             // new fields add to pakage class
             String pk_jason = pr.data.toString();
@@ -384,7 +384,7 @@ public class SContent extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);
@@ -406,7 +406,7 @@ public class SContent extends SBaseModule {
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
 
-        CDPostResponse pr = gson.fromJson(rt, CDPostResponse.class);
+        CDPostResponse pr = CDPostResponse.build(rt);
         if (!pr.success) {
             Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
             throw new Exception(pr.message);

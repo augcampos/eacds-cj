@@ -10,6 +10,7 @@
 package com.edgebox.eacds;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 
 /**
  *
@@ -18,6 +19,7 @@ import com.google.gson.Gson;
 abstract class SBaseModule {
 
     protected final String ServerJavaScriptInterface;
+    protected final JsonParser jsonParser = new JsonParser();
     protected final Gson gson = new Gson();
 
     SBaseModule(String serverJavaScriptInterface) {

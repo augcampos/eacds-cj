@@ -10,8 +10,10 @@
 package com.edgebox.eacds.data;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,16 +59,23 @@ public abstract class CDBaseData {
         sb.append(getClass().getName());
         sb.append(": ");
         for (Field f : this.getClass().getDeclaredFields()) {
+            if (Modifier.isTransient(f.getModifiers())) {
+                continue;
+            }
             sb.append(f.getName());
             sb.append("=");
             try {
                 if (f.getType() == String.class) {
                     sb.append("\"").append(f.get(this)).append("\"");
+                } else if (Collection.class.isAssignableFrom(f.getType())) {
+                    Collection<Object> c = (Collection<Object>) f.get(this);
+                    sb.append("(").append(c.size()).append(")").append(c).append("\"");
                 } else {
                     sb.append(f.get(this));
                 }
             } catch (IllegalAccessException | IllegalArgumentException ex) {
-                sb.append("<Error:").append(ex.getMessage()).append(">");
+                sb.append("<Error>");
+                //sb.append("<Error:").append(ex.getMessage()).append(">");
             }
             sb.append(", ");
         }

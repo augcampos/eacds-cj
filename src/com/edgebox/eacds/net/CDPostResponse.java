@@ -28,6 +28,12 @@ public class CDPostResponse extends CDBaseData {
         rt.message = rt.json.get("message").getAsString();
         rt.errorTrace = rt.json.get("errorTrace").getAsString();
 
+        try {
+            rt.data = rt.json.getAsJsonObject("data").getAsJsonObject();
+        } catch (java.lang.ClassCastException ex) {
+            rt.data = rt.json.get("data").getAsString();
+        }
+
         JsonElement dt = rt.json.get("data");
         if (dt.isJsonNull()) {
             rt.data = null;

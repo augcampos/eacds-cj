@@ -17,19 +17,24 @@ public class CDSchool extends CDBaseData {
 
     public int id;
     public int port;
+    public int groupId;
     public String ip;
     public String url;
     public String name;
     public String address;
     public String location;
+    public String secretKey;
     public long lastDate;
     public long bandwidth;
     public String actionPeriod;
     public long creationDate;
     public int connectionState;
     public int synchronizeState;
-    public String message;
-
+    public long pollingInterval;
+    public String licenseId;
+    public boolean forceSync;
+    public int userId;
+    
     public CDSchool() {
     }
 

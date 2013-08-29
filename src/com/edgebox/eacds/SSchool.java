@@ -120,6 +120,27 @@ public class SSchool extends SBaseModule {
         }
     }
 
+        /**
+     * Update School Info
+     *
+     * @param schoolId id of school
+     * @param schoolMessage new message text to set
+     * @throws Exception
+     */
+    public void setSchoolMessage(int schoolId, String schoolMessage ) throws Exception {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("method", "SSchools.setSchoolMessage");
+        params.put("param1", "" + schoolId);
+        params.put("param2", "\"" + schoolMessage + "\"");
+
+        String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
+        CDPostResponse pr = CDPostResponse.build(rt);
+        if (!pr.success) {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
+    }
+    
     /**
      * Remove an existing schools
      *

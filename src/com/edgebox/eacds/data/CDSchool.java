@@ -28,6 +28,7 @@ public class CDSchool extends CDBaseData {
     public long creationDate;
     public int connectionState;
     public int synchronizeState;
+    public String message;
 
     public CDSchool() {
     }

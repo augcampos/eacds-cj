@@ -27,8 +27,15 @@ public class CDPostResponse extends CDBaseData {
         rt.success = rt.json.get("success").getAsBoolean();
         rt.message = rt.json.get("message").getAsString();
         rt.errorTrace = rt.json.get("errorTrace").getAsString();
-        rt.data = rt.json.getAsJsonObject("data").getAsJsonObject();
 
+        JsonElement dt = rt.json.get("data");
+        if (dt.isJsonNull()) {
+            rt.data = null;
+        } else if (dt.isJsonObject()) {
+            rt.data = dt.getAsJsonObject();
+        } else {
+            rt.data = dt.getAsJsonPrimitive();
+        }
         return rt;
     }
     /**
@@ -38,19 +45,22 @@ public class CDPostResponse extends CDBaseData {
 
     /**
      * Error message
-     * <p>Only filled on case <success> is false.
+     * <p>
+     * Only filled on case <success> is false.
      */
     public String message;
 
     /**
      * More Error Information
-     * <p>Only filled on case <success> is false.
+     * <p>
+     * Only filled on case <success> is false.
      */
     public String errorTrace;
 
     /**
      * Object Returned data
-     * <p>Only filled on case <success> is true.
+     * <p>
+     * Only filled on case <success> is true.
      */
     public Object data;
 

@@ -30,10 +30,15 @@ public class CDSchool extends CDBaseData {
     public long creationDate;
     public int connectionState;
     public int synchronizeState;
-    public long pollingInterval;
     public String licenseId;
+    public long pollingInterval;
     public boolean forceSync;
     public int userId;
+    public long diskTotal;
+    public long diskFree;
+    public long lastContact;
+    public String message;
+    public long messageTimestamp;
     
     public CDSchool() {
     }

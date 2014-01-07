@@ -73,8 +73,14 @@ public class SSchool extends SBaseModule {
         params.put("param1", "" + schoolId);
 
         String rt = CDConnection.Post(this.ServerJavaScriptInterface, params);
-        return gson.fromJson(rt, CDSchool.class);
-
+        CDPostResponse pr = CDPostResponse.build(rt);
+        if (pr.success) {
+             String school_jason = pr.data.toString();
+             return gson.fromJson( school_jason, CDSchool.class);
+        } else {
+            Logger.getLogger(this.getClass().getName()).log(Level.FINE, pr.log());
+            throw new Exception(pr.message);
+        }
     }
 
     /**
@@ -121,7 +127,7 @@ public class SSchool extends SBaseModule {
     }
 
         /**
-     * Update School Info
+     * Set school message
      *
      * @param schoolId id of school
      * @param schoolMessage new message text to set

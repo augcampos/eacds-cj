@@ -41,6 +41,9 @@ public class CDPackage extends CDBaseData {
     public double itemsSize;
     public int itemsCount;
     public String keywords;
+    
+    /* only filled int SContent.listSchoolPackagesSubscribed */
+    public int sortPriority = -1;
 
     public CDPackage() {
     }
